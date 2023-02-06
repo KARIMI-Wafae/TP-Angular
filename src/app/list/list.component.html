@@ -1,0 +1,62 @@
+<head>
+  <title>TP Angular</title>
+  <style>
+    button {
+      width: 90px;
+    }
+
+    table {
+      width: 60%;
+      display: inline-block;
+    }
+
+
+    form {
+      display: inline-block;
+      text-align: right;
+
+    }
+  </style>
+</head>
+<div>
+  <h1>Liste des utilisateurs</h1>
+  <table class="table mt-3">
+    <thead>
+      <th scope="col">ID</th>
+      <th scope="col">Prénom</th>
+      <th scope="col">Age</th>
+      <th scope="col">Actions</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{user.id}}</td>
+        <td>{{user.prenom}}</td>
+        <td>{{user.age}}</td>
+        <td>
+          <button (click)="onEdit(user)" class="btn btn-info">Modifier</button>
+          <button (click)="deleteUser(user)" class="btn btn-danger mx-3">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <form [formGroup]="formulaire">
+    <div>
+      <div>
+        <label for="prenon">Prénom</label>
+        <input type="text" id="prenom" formControlName="prenom">
+      </div>
+      <br><br>
+      <div>
+        <label for="age">Age</label>
+        <input type="text" id="age" formControlName="age">
+      </div>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-info mx-3" (click)="postUserInfos()">Ajouter</button>
+    <button *ngIf="afficher" type="submit" class="btn btn-info mx-3" (click)="updateUser()">Modifier</button>
+  </form>
+
+</div>
+<app-moyenne [listUsers]="users"></app-moyenne>
+<app-somme></app-somme>
