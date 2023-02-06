@@ -13,7 +13,10 @@ import { MoyenneComponent } from '../moyenne/moyenne.component';
 export class ListComponent implements OnInit {
   formulaire!: FormGroup;
   userModel: User = new User();
-  users!: any;
+  users!: User[];
+  somme : number =0;
+  moyenne : number=0;
+  val !: number;
   afficher = false;
   constructor(private crud: CRUDService) { }
 
@@ -25,34 +28,45 @@ export class ListComponent implements OnInit {
       }
     )
     this.getAllUsers();
+
+
   }
 
   postUserInfos() {
     this.userModel.prenom = this.formulaire.value.prenom;
     this.userModel.age = this.formulaire.value.age;
-
     this.crud.postUser(this.userModel)
       .subscribe(res => {
         console.log(res);
-        alert("user ajouté avec succes");
+      //  alert("user ajouté avec succes");
       },
         err => {
           alert("user non ajouté");
         }
       )
+   // this.users.push(this.userModel);
     this.getAllUsers();
     this.formulaire.reset();
   }
 
   getAllUsers() {
-    this.crud.getUser().subscribe(res => {
+    this.crud.getUsers().subscribe((res: User[]) => {
       this.users = res;
+      this.somme=0;
+       this.moyenne=0;
+     res.forEach(element => {
+        if(element.age != null){
+          let age : number= Number(element.age);
+            this.somme+=age;
+        }
+      })
+      this.moyenne=Math.trunc(this.somme/this.users.length);
     })
   }
 
-  deleteUser(user: any) {
+  deleteUser(user: User) {
     this.crud.deleteUser(user.id).subscribe(res => {
-      alert("user supprimé");
+     // alert("user supprimé");
       this.getAllUsers();
     })
   }
@@ -63,6 +77,7 @@ export class ListComponent implements OnInit {
     this.formulaire.controls['age'].setValue(user.age);
 
   }
+
   updateUser() {
     this.userModel.prenom = this.formulaire.value.prenom;
     this.userModel.age = this.formulaire.value.age;
@@ -73,4 +88,5 @@ export class ListComponent implements OnInit {
       this.afficher = false;
     })
   }
+
 }

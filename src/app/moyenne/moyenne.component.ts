@@ -6,11 +6,12 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./moyenne.component.scss']
 })
 export class MoyenneComponent implements OnInit {
-  @Input() listUsers: any;
+  @Input() moyenne!: number;
   constructor() {
-    //
+
   }
   ngOnInit() {
+
 
   }
 }

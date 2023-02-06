@@ -8,13 +8,15 @@ import { ReactiveFormsModule } from '@angular/forms'
 import { HttpClientModule } from '@angular/common/http';
 import { MoyenneComponent } from './moyenne/moyenne.component';
 import { SommeComponent } from './somme/somme.component';
+import { SommeTabComponent } from './somme-tab/somme-tab.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListComponent,
     MoyenneComponent,
-    SommeComponent
+    SommeComponent,
+    SommeTabComponent
   ],
   imports: [
     BrowserModule,
