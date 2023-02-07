@@ -1,19 +1,14 @@
 {
   "posts": [
     {
+      "id": 1,
       "prenom": "wafae",
-      "age": "23",
-      "id": 1
+      "age": "10"
     },
     {
-      "prenom": "karimi",
-      "age": "24",
-      "id": 2
-    },
-    {
+      "id": 2,
       "prenom": "wafae",
-      "age": "11",
-      "id": 3
+      "age": "10"
     }
   ],
   "comments": [],

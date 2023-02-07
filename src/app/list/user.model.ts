@@ -1,5 +1,5 @@
-export class User {
-  id!: number;
-  prenom!: string;
-  age!: number;
+export interface User {
+  id: number;
+  prenom: string;
+  age: number;
 }

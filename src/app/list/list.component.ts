@@ -12,15 +12,20 @@ import { MoyenneComponent } from '../moyenne/moyenne.component';
 })
 export class ListComponent implements OnInit {
   formulaire!: FormGroup;
-  userModel: User = new User();
-  users!: User[];
+  userModel!: User ;
+  users: User[]=[];
   somme : number =0;
   moyenne : number=0;
-  val !: number;
+  x : number =0;
   afficher = false;
-  constructor(private crud: CRUDService) { }
+  currentId !: number;
+
+  constructor(private crud: CRUDService) {
+    console.log('construstor')
+  }
 
   ngOnInit(): void {
+  console.log('list')
     this.formulaire = new FormGroup(
       {
         "prenom": new FormControl(null),
@@ -28,14 +33,12 @@ export class ListComponent implements OnInit {
       }
     )
     this.getAllUsers();
-
-
   }
 
   postUserInfos() {
-    this.userModel.prenom = this.formulaire.value.prenom;
-    this.userModel.age = this.formulaire.value.age;
-    this.crud.postUser(this.userModel)
+    this.getIdCourrant();
+    const userData:User = {id:this.currentId+1, prenom : String(this.formulaire.value.prenom), age: this.formulaire.value.age}
+    this.crud.postUser(userData)
       .subscribe(res => {
         console.log(res);
       //  alert("user ajouté avec succes");
@@ -44,17 +47,18 @@ export class ListComponent implements OnInit {
           alert("user non ajouté");
         }
       )
-   // this.users.push(this.userModel);
-    this.getAllUsers();
+    this.users.push(userData);
     this.formulaire.reset();
   }
 
   getAllUsers() {
     this.crud.getUsers().subscribe((res: User[]) => {
       this.users = res;
+      this.currentId= res.length;
       this.somme=0;
        this.moyenne=0;
-     res.forEach(element => {
+       console.log('list-getusers')
+       res.forEach(element => {
         if(element.age != null){
           let age : number= Number(element.age);
             this.somme+=age;
@@ -66,27 +70,47 @@ export class ListComponent implements OnInit {
 
   deleteUser(user: User) {
     this.crud.deleteUser(user.id).subscribe(res => {
-     // alert("user supprimé");
-      this.getAllUsers();
+     for (let i=0; i< this.users.length;i++){
+      if(this.users[i].id == user.id){
+        this.users.splice(i,1);
+      }
+     }
+     this.currentId--;
     })
   }
-  onEdit(user: any) {
+  onEdit(user: User) {
     this.afficher = true;
-    this.userModel.id = user.id;
+    this.userModel = user;
     this.formulaire.controls['prenom'].setValue(user.prenom);
     this.formulaire.controls['age'].setValue(user.age);
 
   }
 
   updateUser() {
-    this.userModel.prenom = this.formulaire.value.prenom;
-    this.userModel.age = this.formulaire.value.age;
-    this.crud.updateUser(this.userModel, this.userModel.id).subscribe(res => {
+    const userData:User = {id:this.userModel.id, prenom : String(this.formulaire.value.prenom), age: this.formulaire.value.age}
+    this.crud.updateUser(userData, userData.id).subscribe(res => {
       alert("user modifié");
-      this.getAllUsers();
+     for(let i=0; i< this.users.length;i++){
+       if(this.users[i].id == this.userModel.id)  {
+        this.users[i]=userData;
+       }
+     }
+     this.users = this.users.filter(x => x);
+
       this.formulaire.reset();
       this.afficher = false;
     })
+  }
+
+  getIdCourrant(){
+    this.crud.getIdCourrant().subscribe((res: Number) => {
+     this.currentId = Number(res)+1 ;
+     console.log(this.currentId);
+
+  });
+  }
+  change(){
+    this.x=Math.random();
   }
 
 }

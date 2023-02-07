@@ -7,8 +7,7 @@ import { User } from '../list/user.model';
   providedIn: 'root'
 })
 export class CRUDService {
-
-
+//idCourrant !: number;
   constructor(private http: HttpClient) { }
 
   postUser(user: User) {
@@ -36,6 +35,15 @@ export class CRUDService {
     return this.http.delete<User>("http://localhost:3000/posts/" + id)
       .pipe(map((res: User) => {
         return res;
+      }))
+  }
+  //recuperer le id courant :
+
+  getIdCourrant(){
+    return this.http.get<User[]>("http://localhost:3000/posts")
+      .pipe(map((res: User[]) => {
+    //  console.log(res.length);
+        return res.length;
       }))
   }
 }

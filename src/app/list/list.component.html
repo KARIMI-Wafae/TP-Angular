@@ -58,6 +58,11 @@
   </form>
 
 </div>
-<app-moyenne [moyenne]="moyenne"></app-moyenne>
-<app-somme [somme]="somme"></app-somme>
 <app-somme-tab [users]="users"></app-somme-tab>
+<app-moyenne-tab [users]="users" [x]="x"></app-moyenne-tab>
+<label>{{x}}</label>
+<button (click)="change()">click</button>
+<!--somme et moyenne en passant que la valeur somme et moy-->
+<!--<app-moyenne [moyenne]="moyenne"></app-moyenne>
+<app-somme [somme]="somme"></app-somme>-->
+

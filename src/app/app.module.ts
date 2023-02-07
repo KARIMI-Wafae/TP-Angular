@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MoyenneComponent } from './moyenne/moyenne.component';
 import { SommeComponent } from './somme/somme.component';
 import { SommeTabComponent } from './somme-tab/somme-tab.component';
+import { MoyenneTabComponent } from './moyenne-tab/moyenne-tab.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { SommeTabComponent } from './somme-tab/somme-tab.component';
     ListComponent,
     MoyenneComponent,
     SommeComponent,
-    SommeTabComponent
+    SommeTabComponent,
+    MoyenneTabComponent
   ],
   imports: [
     BrowserModule,
