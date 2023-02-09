@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, max } from 'rxjs/operators';
 import { User } from '../list/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CRUDService {
-//idCourrant !: number;
+  idCourrant : number =0;
   constructor(private http: HttpClient) { }
 
   postUser(user: User) {
@@ -46,4 +46,6 @@ export class CRUDService {
         return res.length;
       }))
   }
+
+
 }

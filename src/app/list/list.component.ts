@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms'
 import { User } from './user.model';
 import { CRUDService } from '../services/crud.service';
 import { MoyenneComponent } from '../moyenne/moyenne.component';
+import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
+import { store } from '../store/store';
 
 
 @Component({
@@ -20,20 +22,25 @@ export class ListComponent implements OnInit {
   afficher = false;
   currentId !: number;
 
-  constructor(private crud: CRUDService) {
-    console.log('construstor')
+
+
+  constructor(private crud: CRUDService,private store : store) {
+    console.log(store);
+
   }
 
   ngOnInit(): void {
-  console.log('list')
     this.formulaire = new FormGroup(
       {
         "prenom": new FormControl(null),
         "age": new FormControl(null)
       }
     )
-    this.getAllUsers();
+   // this.getAllUsers();
+   this.store.getAllUsers();
   }
+
+
 
   postUserInfos() {
     this.getIdCourrant();
@@ -48,7 +55,12 @@ export class ListComponent implements OnInit {
         }
       )
     this.users.push(userData);
+    this.users = this.users.filter(x => x);
     this.formulaire.reset();
+  }
+  postUsingStore(prenom : string, age : number ){
+    const userData:User = {id:this.currentId+1, prenom : String(this.formulaire.value.prenom), age: this.formulaire.value.age}
+  //  store.postUserInfos(userData)
   }
 
   getAllUsers() {
@@ -77,6 +89,7 @@ export class ListComponent implements OnInit {
      }
      this.currentId--;
     })
+    this.users = this.users.filter(x => x);
   }
   onEdit(user: User) {
     this.afficher = true;
@@ -96,7 +109,6 @@ export class ListComponent implements OnInit {
        }
      }
      this.users = this.users.filter(x => x);
-
       this.formulaire.reset();
       this.afficher = false;
     })
@@ -106,11 +118,9 @@ export class ListComponent implements OnInit {
     this.crud.getIdCourrant().subscribe((res: Number) => {
      this.currentId = Number(res)+1 ;
      console.log(this.currentId);
-
   });
   }
   change(){
     this.x=Math.random();
   }
-
 }
