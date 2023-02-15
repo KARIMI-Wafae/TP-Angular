@@ -7,14 +7,14 @@ import { User } from '../list/user.model';
   providedIn: 'root'
 })
 export class CRUDService {
-  idCourrant : number =0;
+  idCourrant: number = 0;
   constructor(private http: HttpClient) { }
 
   postUser(user: User) {
     return this.http.post<User>("http://localhost:3000/posts/", user)
-      .pipe(map((res: User) => {
-        return res;
-      }))
+    /* .pipe(map((res: User) => {
+       return res;
+     }))*/
   }
 
   getUsers() {
@@ -39,13 +39,15 @@ export class CRUDService {
   }
   //recuperer le id courant :
 
-  getIdCourrant(){
+  getIdCourrant() {
     return this.http.get<User[]>("http://localhost:3000/posts")
       .pipe(map((res: User[]) => {
-    //  console.log(res.length);
-        return res.length;
+        for (let i = 0; i < res.length - 1; i++) {
+          if (res[i].id < res[i + 1].id) {
+            this.idCourrant = res[i + 1].id;
+          }
+        }
+        return this.idCourrant;
       }))
   }
-
-
 }

@@ -7,24 +7,24 @@ import { User } from '../list/user.model';
   templateUrl: './somme-tab.component.html',
   styleUrls: ['./somme-tab.component.scss']
 })
-export class SommeTabComponent implements OnInit, OnChanges{
-  @Input() users! : User[];
-  somme : number= 0;
-  constructor(){
-    console.log('constructor-somme')
+export class SommeTabComponent implements OnInit, OnChanges {
+  @Input() users!: User[];
+  somme: number = 0;
+  constructor() {
+    // console.log('constructor-somme')
   }
 
-  ngOnInit(){
-    console.log('oninit-somme');
+  ngOnInit() {
+    // console.log('oninit-somme');
 
   }
-  ngOnChanges(){
-    this.somme=0;
-    console.log( 'somme' , this.users)
+  ngOnChanges() {
+    this.somme = 0;
+    //console.log('somme', this.users)
     this.users.forEach(element => {
-      if(element.age != null){
-        let age : number= Number(element.age);
-          this.somme+=age;
+      if (element.age != null) {
+        let age: number = Number(element.age);
+        this.somme += age;
       }
     })
   }
