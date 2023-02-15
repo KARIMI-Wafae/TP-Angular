@@ -1,9 +1,9 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms'
 import { User } from './user.model';
 import { CRUDService } from '../services/crud.service';
 import { MoyenneComponent } from '../moyenne/moyenne.component';
-import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, Subject , of} from 'rxjs';
 import { store } from '../store/store';
 
 
@@ -12,10 +12,11 @@ import { store } from '../store/store';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class ListComponent implements OnInit, OnChanges {
+export class ListComponent implements OnInit , OnChanges{
   formulaire!: FormGroup;
   userModel!: User;
-  users: User[] = [];
+  //users: User[] = [];
+  //_users$ ?: Observable<User[]>;
   somme: number = 0;
   moyenne: number = 0;
   max: number = 0;
@@ -24,8 +25,9 @@ export class ListComponent implements OnInit, OnChanges {
 
 
 
-  constructor(private store: store) {
-    console.log(store);
+
+  constructor(public store: store) {
+
   }
 
   ngOnInit(): void {
@@ -35,12 +37,13 @@ export class ListComponent implements OnInit, OnChanges {
         "age": new FormControl(null)
       }
     )
-    this.getAllUsers();
+   this.getAllUsers();
+  //  this._users$=this.store.data$;
+  //  this.users=this.store.users;
+
   }
+  ngOnChanges(changes: SimpleChanges): void {
 
-  ngOnChanges() {
-
-    this.users = this.store.users;
   }
   //*********** Post using crud service **************
 
@@ -67,14 +70,15 @@ export class ListComponent implements OnInit, OnChanges {
     const userData: User = { id: this.currentId + 1, prenom: String(this.formulaire.value.prenom), age: this.formulaire.value.age }
     this.store.postUserInfos(userData);
     this.formulaire.reset();
+    // this.users = this.users.filter(x => x);
   }
 
   //*********** Get using store **************
   getAllUsers() {
-    this.store.getAllUsers2();
-    this.store.getAllUsers().subscribe((res: User[]) => {
-      this.users = res;
-    })
+   this.store.getAllUsers();
+   console.log('this.users=this.store.users');
+  //  this.users=this.store.users
+  //  this.users = this.users.filter(x => x);
   }
 
   //*********** Delete using crud service **************
@@ -95,7 +99,6 @@ export class ListComponent implements OnInit, OnChanges {
 
   deleteUsingStore(user: User) {
     this.store.deleteUser(user);
-    this.store.users = this.store.users.filter(x => x);
   }
 
   //************* On Edit   **************
@@ -132,7 +135,6 @@ export class ListComponent implements OnInit, OnChanges {
     this.store.updateUser(userData);
     this.formulaire.reset();
     this.afficher = false;
-    //this.users = this.users.filter(x => x);
   }
 
   /* getIdCourrant() {

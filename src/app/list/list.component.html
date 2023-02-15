@@ -28,7 +28,7 @@
       <th scope="col">Actions</th>
     </thead>
     <tbody>
-      <tr *ngFor="let user of users">
+      <tr *ngFor="let user of store.data$ | async">
         <td>{{user.id}}</td>
         <td>{{user.prenom}}</td>
         <td>{{user.age}}</td>
@@ -58,8 +58,9 @@
   </form>
 
 </div>
-<app-somme-tab [users]="users"></app-somme-tab>
-<app-moyenne-tab [users]="users"></app-moyenne-tab>
+
+ <app-somme-tab></app-somme-tab>
+<app-moyenne-tab></app-moyenne-tab>
 <!--<label>{{x}}</label>
 <button (click)="change()">click</button>
 somme et moyenne en passant que la valeur somme et moy-->

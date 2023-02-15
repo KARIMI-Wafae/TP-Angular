@@ -12,9 +12,9 @@ export class CRUDService {
 
   postUser(user: User) {
     return this.http.post<User>("http://localhost:3000/posts/", user)
-    /* .pipe(map((res: User) => {
+     .pipe(map((res: User) => {
        return res;
-     }))*/
+     }))
   }
 
   getUsers() {
